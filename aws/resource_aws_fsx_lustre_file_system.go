@@ -108,6 +108,26 @@ func resourceAwsFsxLustreFileSystem() *schema.Resource {
 					validation.StringMatch(regexp.MustCompile(`^[1-7]:([01]\d|2[0-3]):?([0-5]\d)$`), "must be in the format d:HH:MM"),
 				),
 			},
+			"deployment_type": {
+				Type:  schema.TypeString,
+				Optional: true,
+				ForceNew: true,
+				ValidateFunc: validation.StringInSlice([]string{
+					"SCRATCH_1",
+					"SCRATCH_2",
+					"PERSISTENT_1",
+				}, false),
+			},
+			"per_unit_storage_throughput": {
+				Type: schema.TypeInt,
+				Optional: true,
+				ForceNew: true,
+				ValidateFunc: validation.IntInSlice([]int{
+					50,
+					100,
+					200,
+				}),
+			},
 		},
 	}
 }
@@ -160,6 +180,20 @@ func resourceAwsFsxLustreFileSystemCreate(d *schema.ResourceData, meta interface
 		}
 
 		input.LustreConfiguration.WeeklyMaintenanceStartTime = aws.String(v.(string))
+	}
+
+	if v, ok := d.GetOk("deployment_type"); ok {
+		if input.LustreConfiguration == nil {
+			input.LustreConfiguration = &fsx.CreateFileSystemLustreConfiguration{}
+		}
+		input.LustreConfiguration.DeploymentType = aws.String(v.(string))
+	}
+
+	if v, ok := d.GetOk("per_unit_storage_throughput"); ok {
+		if input.LustreConfiguration == nil {
+			input.LustreConfiguration = &fsx.CreateFileSystemLustreConfiguration{}
+		}
+		input.LustreConfiguration.PerUnitStorageThroughput = aws.Int64(int64(v.(int)))
 	}
 
 	result, err := conn.CreateFileSystem(input)
