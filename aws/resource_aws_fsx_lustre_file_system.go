@@ -73,6 +73,10 @@ func resourceAwsFsxLustreFileSystem() *schema.Resource {
 				Type:     schema.TypeString,
 				Computed: true,
 			},
+			"mount_name": {
+				Type:     schema.TypeString,
+				Computed: true,
+			},
 			"security_group_ids": {
 				Type:     schema.TypeSet,
 				Optional: true,
@@ -284,6 +288,7 @@ func resourceAwsFsxLustreFileSystemRead(d *schema.ResourceData, meta interface{}
 	d.Set("export_path", filesystem.LustreConfiguration.DataRepositoryConfiguration.ExportPath)
 	d.Set("import_path", filesystem.LustreConfiguration.DataRepositoryConfiguration.ImportPath)
 	d.Set("imported_file_chunk_size", filesystem.LustreConfiguration.DataRepositoryConfiguration.ImportedFileChunkSize)
+	d.Set("mount_name", filesystem.LustreConfiguration.MountName)
 
 	if err := d.Set("network_interface_ids", aws.StringValueSlice(filesystem.NetworkInterfaceIds)); err != nil {
 		return fmt.Errorf("error setting network_interface_ids: %s", err)
