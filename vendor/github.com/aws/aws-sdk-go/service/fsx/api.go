@@ -2835,6 +2835,19 @@ type CreateFileSystemInput struct {
 	// StorageCapacity is a required field
 	StorageCapacity *int64 `type:"integer" required:"true"`
 
+	// Sets the storage type for the Amazon FSx for Windows file system you're creating.
+	// Valid values are SSD and HDD.
+	//
+	//    * Set to SSD to use solid state drive storage. SSD is supported on all
+	//    Windows deployment types.
+	//
+	//    * Set to HDD to use hard disk drive storage. HDD is supported on SINGLE_AZ_2
+	//    and MULTI_AZ_1 Windows file system deployment types.
+	//
+	// Default value is SSD. For more information, see Storage Type Options (https://docs.aws.amazon.com/fsx/latest/WindowsGuide/optimize-fsx-costs.html#storage-type-options)
+	// in the Amazon FSx for Windows User Guide.
+	StorageType *string `type:"string" enum:"StorageType"`
+
 	// Specifies the IDs of the subnets that the file system will be accessible
 	// from. For Windows MULTI_AZ_1 file system deployment types, provide exactly
 	// two subnet IDs, one for the preferred file server and one for the standby

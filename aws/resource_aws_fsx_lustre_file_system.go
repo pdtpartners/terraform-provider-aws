@@ -161,6 +161,7 @@ func resourceAwsFsxLustreFileSystemCreate(d *schema.ResourceData, meta interface
 		ClientRequestToken: aws.String(resource.UniqueId()),
 		FileSystemType:     aws.String(fsx.FileSystemTypeLustre),
 		StorageCapacity:    aws.Int64(int64(d.Get("storage_capacity").(int))),
+		StorageType:        aws.String(d.Get("storage_type").(string)),
 		SubnetIds:          expandStringSet(d.Get("subnet_ids").(*schema.Set)),
 	}
 
