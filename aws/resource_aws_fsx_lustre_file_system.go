@@ -127,10 +127,26 @@ func resourceAwsFsxLustreFileSystem() *schema.Resource {
 				Optional: true,
 				ForceNew: true,
 				ValidateFunc: validation.IntInSlice([]int{
+					12,
+					40,
 					50,
 					100,
 					200,
 				}),
+				"storage_type": {
+					Type: schema.TypeString,
+					Optional: true,
+					ForceNew: true,
+					Default:  fsx.StorageTypeSsd,
+					ValidateFunc: validation.StringInSlice(fsx.StorageType_Values()),
+				},
+				"drive_cache_type": {
+					Type: schema.TypeString,
+					Optional: true,
+					ForceNew: true,
+					Defaut: fsx.DriveCacheTypeNone,
+					validateFunc: validation.StringInSlice(DriveCacheType_Values())
+				}
 			},
 		},
 	}
@@ -191,6 +207,20 @@ func resourceAwsFsxLustreFileSystemCreate(d *schema.ResourceData, meta interface
 			input.LustreConfiguration = &fsx.CreateFileSystemLustreConfiguration{}
 		}
 		input.LustreConfiguration.DeploymentType = aws.String(v.(string))
+	}
+
+	if v, ok := d.GetOk("storage_type"); ok {
+		if input.LustreConfiguration == nil {
+			input.LustreConfiguration = &fsx.CreateFileSystemLustreConfiguration{}
+		}
+		input.LustreConfiguration.StorageType = aws.String(v.(string))
+	}
+
+	if v, ok := d.GetOk("drive_cache_type"); ok {
+		if input.LustreConfiguration == nil {
+			input.LustreConfiguration = &fsx.CreateFileSystemLustreConfiguration{}
+		}
+		input.LustreConfiguration.DriveCacheType = aws.String(v.(string))
 	}
 
 	if v, ok := d.GetOk("per_unit_storage_throughput"); ok {
@@ -289,6 +319,9 @@ func resourceAwsFsxLustreFileSystemRead(d *schema.ResourceData, meta interface{}
 	d.Set("import_path", filesystem.LustreConfiguration.DataRepositoryConfiguration.ImportPath)
 	d.Set("imported_file_chunk_size", filesystem.LustreConfiguration.DataRepositoryConfiguration.ImportedFileChunkSize)
 	d.Set("mount_name", filesystem.LustreConfiguration.MountName)
+	d.Set("deployment_type", filesystem.LustreConfiguration.DeploymentType)
+	d.Set("storage_type", filesystem.LustreConfiguration.StorageType)
+	d.Set("drive_cache_type", filesystem.LustreConfiguration.DriveCacheType)
 
 	if err := d.Set("network_interface_ids", aws.StringValueSlice(filesystem.NetworkInterfaceIds)); err != nil {
 		return fmt.Errorf("error setting network_interface_ids: %s", err)
