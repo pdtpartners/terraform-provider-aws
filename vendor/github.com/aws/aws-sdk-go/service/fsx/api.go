@@ -3085,8 +3085,8 @@ func (s *CreateFileSystemLustreConfiguration) Validate() error {
 	if s.ImportedFileChunkSize != nil && *s.ImportedFileChunkSize < 1 {
 		invalidParams.Add(request.NewErrParamMinValue("ImportedFileChunkSize", 1))
 	}
-	if s.PerUnitStorageThroughput != nil && *s.PerUnitStorageThroughput < 50 {
-		invalidParams.Add(request.NewErrParamMinValue("PerUnitStorageThroughput", 50))
+	if s.PerUnitStorageThroughput != nil && *s.PerUnitStorageThroughput < 12 {
+		invalidParams.Add(request.NewErrParamMinValue("PerUnitStorageThroughput", 12))
 	}
 	if s.WeeklyMaintenanceStartTime != nil && len(*s.WeeklyMaintenanceStartTime) < 7 {
 		invalidParams.Add(request.NewErrParamMinLen("WeeklyMaintenanceStartTime", 7))
