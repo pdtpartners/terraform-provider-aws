@@ -64,8 +64,10 @@ func resourceAwsFsxLustreFileSystem() *schema.Resource {
 				ForceNew:     true,
 				ValidateFunc: validation.IntBetween(1, 512000),
 			},
+			// The first ID returned is the one for the MGS, so we must use a TypeList instead of a TypeSet. Typeset will
+			// automatically sort all the IDs.
 			"network_interface_ids": {
-				Type:     schema.TypeSet,
+				Type:     schema.TypeList,
 				Computed: true,
 				Elem:     &schema.Schema{Type: schema.TypeString},
 			},
