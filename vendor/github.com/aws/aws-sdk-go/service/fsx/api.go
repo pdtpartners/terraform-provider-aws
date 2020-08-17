@@ -3048,16 +3048,16 @@ type CreateFileSystemLustreConfiguration struct {
 	// MiB (500 GiB). Amazon S3 objects have a maximum size of 5 TB.
 	ImportedFileChunkSize *int64 `min:"1" type:"integer"`
 
-	// (Optional) For the PERSISTENT_1 deployment type, describes the amount of
-	// read and write throughput for each 1 tebibyte of storage, in MB/s/TiB. File
-	// system throughput capacity is calculated by multiplying ﬁle system storage
-	// capacity (TiB) by the PerUnitStorageThroughput (MB/s/TiB). For a 2.4 TiB
-	// ﬁle system, provisioning 50 MB/s/TiB of PerUnitStorageThroughput yields
-	// 120 MB/s of ﬁle system throughput. You pay for the amount of throughput
-	// that you provision. (Default = 200 MB/s/TiB)
+	// Required for the PERSISTENT_1 deployment type, describes the amount of read
+	// and write throughput for each 1 tebibyte of storage, in MB/s/TiB. File system
+	// throughput capacity is calculated by multiplying ﬁle system storage capacity
+	// (TiB) by the PerUnitStorageThroughput (MB/s/TiB). For a 2.4 TiB ﬁle system,
+	// provisioning 50 MB/s/TiB of PerUnitStorageThroughput yields 117 MB/s of ﬁle
+	// system throughput. You pay for the amount of throughput that you provision.
 	//
-	// Valid values are 50, 100, 200.
-	PerUnitStorageThroughput *int64 `min:"50" type:"integer"`
+	// Valid values for SSD storage: 50, 100, 200. Valid values for HDD storage:
+	// 12, 40.
+	PerUnitStorageThroughput *int64 `min:"12" type:"integer"`
 
 	// The preferred time to perform weekly maintenance, in the UTC time zone.
 	WeeklyMaintenanceStartTime *string `min:"7" type:"string"`
