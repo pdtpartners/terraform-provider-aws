@@ -2993,6 +2993,14 @@ type CreateFileSystemLustreConfiguration struct {
 	// Regions. To learn more, Encrypting Data in Transit (https://docs.aws.amazon.com/fsx/latest/LustreGuide/encryption-in-transit-fsxl.html).
 	DeploymentType *string `type:"string" enum:"LustreDeploymentType"`
 
+	// The type of drive cache used by PERSISTENT_1 file systems that are provisioned
+	// with HDD storage devices. This parameter is required when storage type is
+	// HDD. Set to READ, improve the performance for frequently accessed files and
+	// allows 20% of the total storage capacity of the file system to be cached.
+	//
+	// This parameter is required when StorageType is set to HDD.
+	DriveCacheType *string `type:"string" enum:"DriveCacheType"`
+
 	// (Optional) The path in Amazon S3 where the root of your Amazon FSx file system
 	// is exported. The path must use the same Amazon S3 bucket as specified in
 	// ImportPath. You can provide an optional prefix to which new and changed data
@@ -4516,6 +4524,11 @@ type FileSystem struct {
 	// The storage capacity of the file system in gigabytes (GB).
 	StorageCapacity *int64 `type:"integer"`
 
+	// The storage type of the file system. Valid values are SSD and HDD. If set
+	// to SSD, the file system uses solid state drive storage. If set to HDD, the
+	// file system uses hard disk drive storage.
+	StorageType *string `type:"string" enum:"StorageType"`
+
 	// The ID of the subnet to contain the endpoint for the file system. One and
 	// only one is supported. The file system is launched in the Availability Zone
 	// associated with this subnet.
@@ -4612,6 +4625,12 @@ func (s *FileSystem) SetResourceARN(v string) *FileSystem {
 // SetStorageCapacity sets the StorageCapacity field's value.
 func (s *FileSystem) SetStorageCapacity(v int64) *FileSystem {
 	s.StorageCapacity = &v
+	return s
+}
+
+// SetStorageType sets the StorageType field's value.
+func (s *FileSystem) SetStorageType(v string) *FileSystem {
+	s.StorageType = &v
 	return s
 }
 
@@ -5239,6 +5258,14 @@ type LustreFileSystemConfiguration struct {
 	// The deployment type of the FSX for Lustre file system.
 	DeploymentType *string `type:"string" enum:"LustreDeploymentType"`
 
+	// The type of drive cache used by PERSISTENT_1 file systems that are provisioned
+	// with HDD storage devices. This parameter is required when storage type is
+	// HDD. Set to READ, improve the performance for frequently accessed files and
+	// allows 20% of the total storage capacity of the file system to be cached.
+	//
+	// This parameter is required when StorageType is set to HDD.
+	DriveCacheType *string `type:"string" enum:"DriveCacheType"`
+
 	// You use the MountName value when mounting the file system.
 	//
 	// For the SCRATCH_1 deployment type, this value is always "fsx". For SCRATCH_2
@@ -5276,6 +5303,12 @@ func (s *LustreFileSystemConfiguration) SetDataRepositoryConfiguration(v *DataRe
 // SetDeploymentType sets the DeploymentType field's value.
 func (s *LustreFileSystemConfiguration) SetDeploymentType(v string) *LustreFileSystemConfiguration {
 	s.DeploymentType = &v
+	return s
+}
+
+// SetDriveCacheType sets the DriveCacheType field's value.
+func (s *CreateFileSystemLustreConfiguration) SetDriveCacheType(v string) *CreateFileSystemLustreConfiguration {
+	s.DriveCacheType = &v
 	return s
 }
 
@@ -6616,6 +6649,22 @@ const (
 	DataRepositoryTaskTypeExportToRepository = "EXPORT_TO_REPOSITORY"
 )
 
+const (
+	// DriveCacheTypeNone is a DriveCacheType enum value
+	DriveCacheTypeNone = "NONE"
+
+	// DriveCacheTypeRead is a DriveCacheType enum value
+	DriveCacheTypeRead = "READ"
+)
+
+// DriveCacheType_Values returns all elements of the DriveCacheType enum
+func DriveCacheType_Values() []string {
+	return []string{
+		DriveCacheTypeNone,
+		DriveCacheTypeRead,
+	}
+}
+
 // The lifecycle status of the file system.
 const (
 	// FileSystemLifecycleAvailable is a FileSystemLifecycle enum value
@@ -6702,6 +6751,23 @@ const (
 	// ServiceLimitTotalUserInitiatedBackups is a ServiceLimit enum value
 	ServiceLimitTotalUserInitiatedBackups = "TOTAL_USER_INITIATED_BACKUPS"
 )
+
+// The storage type for your Amazon FSx file system.
+const (
+	// StorageTypeSsd is a StorageType enum value
+	StorageTypeSsd = "SSD"
+
+	// StorageTypeHdd is a StorageType enum value
+	StorageTypeHdd = "HDD"
+)
+
+// StorageType_Values returns all elements of the StorageType enum
+func StorageType_Values() []string {
+	return []string{
+		StorageTypeSsd,
+		StorageTypeHdd,
+	}
+}
 
 const (
 	// WindowsDeploymentTypeMultiAz1 is a WindowsDeploymentType enum value
