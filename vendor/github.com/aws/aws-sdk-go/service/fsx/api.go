@@ -5289,9 +5289,11 @@ type LustreFileSystemConfiguration struct {
 	// Per unit storage throughput represents the megabytes per second of read or
 	// write throughput per 1 tebibyte of storage provisioned. File system throughput
 	// capacity is equal to Storage capacity (TiB) * PerUnitStorageThroughput (MB/s/TiB).
-	// This option is only valid for PERSISTENT_1 deployment types. Valid values
-	// are 50, 100, 200.
-	PerUnitStorageThroughput *int64 `min:"50" type:"integer"`
+	// This option is only valid for PERSISTENT_1 deployment types.
+	//
+	// Valid values for SSD storage: 50, 100, 200. Valid values for HDD storage:
+	// 12, 40.
+	PerUnitStorageThroughput *int64 `min:"12" type:"integer"`
 
 	// The UTC time that you want to begin your weekly maintenance window.
 	WeeklyMaintenanceStartTime *string `min:"7" type:"string"`
