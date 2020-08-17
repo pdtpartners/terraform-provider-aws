@@ -82,7 +82,7 @@ func dataSourceAwsFsxLustreFileSystem() *schema.Resource {
 			"storage_type": {
 				Type: schema.TypeString,
 				Computed: true,
-			}
+			},
 			"per_unit_storage_throughput": {
 				Type: schema.TypeInt,
 				Computed: true,

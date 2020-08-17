@@ -147,8 +147,8 @@ func resourceAwsFsxLustreFileSystem() *schema.Resource {
 					Optional: true,
 					ForceNew: true,
 					Defaut: fsx.DriveCacheTypeNone,
-					validateFunc: validation.StringInSlice(DriveCacheType_Values())
-				}
+					validateFunc: validation.StringInSlice(DriveCacheType_Values()),
+				},
 			},
 		},
 	}
